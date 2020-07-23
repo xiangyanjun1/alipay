@@ -1,8 +1,10 @@
 package com.nantian.demo.controller;
 
+import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.request.AlipayTradePagePayRequest;
+import com.alipay.api.request.AlipayTradeQueryRequest;
 import com.nantian.demo.domain.Orders;
 import com.nantian.demo.service.OrdersService;
 import com.nantian.demo.utils.AlipayConfig;
@@ -12,7 +14,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 @Controller
@@ -68,5 +74,69 @@ public class OrdersController {
 		return result;
 	}
 
+
+
+	@RequestMapping("/getPayPage")
+	public void getPayPage(String WIDout_trade_no,String WIDtotal_amount,String WIDsubject,String WIDbody,HttpServletResponse response) throws AlipayApiException, IOException {
+		response.setCharacterEncoding("utf-8");
+		ModelAndView modelAndView = new ModelAndView("alipay.trade.page.pay");
+		//获得初始化的AlipayClient
+		AlipayClient alipayClient = new DefaultAlipayClient(AlipayConfig.gatewayUrl, AlipayConfig.app_id, AlipayConfig.merchant_private_key, "json", AlipayConfig.charset, AlipayConfig.alipay_public_key, AlipayConfig.sign_type);
+
+		//设置请求参数
+		AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();
+		alipayRequest.setReturnUrl(AlipayConfig.return_url);
+		alipayRequest.setNotifyUrl(AlipayConfig.notify_url);
+
+		alipayRequest.setBizContent("{\"out_trade_no\":\""+ WIDout_trade_no +"\","
+				+ "\"total_amount\":\""+ WIDtotal_amount +"\","
+				+ "\"subject\":\""+ WIDsubject +"\","
+				+ "\"body\":\""+ WIDbody +"\","
+				+ "\"product_code\":\"FAST_INSTANT_TRADE_PAY\"}");
+
+		//请求
+		String result = alipayClient.pageExecute(alipayRequest).getBody();
+		System.out.println(result);
+		modelAndView.addObject("result",result);
+		response.setContentType("text/html;charset=utf-8");
+		response.getWriter().print(result);
+		response.getWriter().flush();
+	}
+
+
+	@RequestMapping("/query")
+	public void query(String WIDTQout_trade_no,String WIDTQtrade_no,HttpServletResponse response) throws AlipayApiException, IOException {
+		//获得初始化的AlipayClient
+		AlipayClient alipayClient = new DefaultAlipayClient(AlipayConfig.gatewayUrl, AlipayConfig.app_id, AlipayConfig.merchant_private_key, "json", AlipayConfig.charset, AlipayConfig.alipay_public_key, AlipayConfig.sign_type);
+		//设置请求参数
+		AlipayTradeQueryRequest alipayRequest = new AlipayTradeQueryRequest();
+		alipayRequest.setBizContent("{\"out_trade_no\":\""+ WIDTQout_trade_no +"\","+"\"trade_no\":\""+ WIDTQtrade_no +"\"}");
+		//请求
+		String result = alipayClient.execute(alipayRequest).getBody();
+		//TODO
+		/*
+		{
+			"alipay_trade_query_response": {
+			"code": "10000",
+					"msg": "Success",
+					"buyer_logon_id": "ijd***@sandbox.com",
+					"buyer_pay_amount": "0.00",
+					"buyer_user_id": "2088102176977130",
+					"buyer_user_type": "PRIVATE",
+					"invoice_amount": "0.00",
+					"out_trade_no": "202072314449921",
+					"point_amount": "0.00",
+					"receipt_amount": "0.00",
+					"total_amount": "0.01",
+					"trade_no": "2020072322001477130501024273",
+					"trade_status": "WAIT_BUYER_PAY"
+		},
+			"sign": "GFfHPAfskHE5yHv948K2C605E/W0ZYQUCECAVm+uCdosM+9zofNWRA9wqXEE6oKw6pQCXm20WHI2n6k1RYKCY9imqqAV9EcnP017oBcvU/BeDZ7Y7Vnql+/xcjrk+a0xS6LuUmMeheCpjpA8NTgj6iLZWRiy6PLu8mI/o3Eu33ca8C8t2HvXifbCTrHRmjReZ8LrlMfeQnna5FSdBrAFT35QzIfrHl02YIr0gnmpLWrf9l3jyKfmmpDHRX0gXEMQV+1zwnFWQPvD1kkeyDwE3Om+pfxg8i+MzJYeja4ri1RQUnlEcey+hKdsGCq1TPNMuR5oYlUWN8lWdZfOoG24Vw=="
+		}
+		*/
+		response.setContentType("text/html;charset=utf-8");
+		response.getWriter().print(result);
+		response.getWriter().flush();
+	}
 
 }

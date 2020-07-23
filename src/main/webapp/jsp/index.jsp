@@ -203,7 +203,7 @@ h2 {
 			<h2 id="tab4" name="tab">退 款 查 询</h2>
 			<h2 id="tab5" name="tab">交 易 关 闭</h2>
 		</div>
-		<form name=alipayment action=alipay.trade.page.pay.jsp method=post
+		<form name=alipayment action="/orders/getPayPage" method=get
 			  target="_blank">
 			<div id="body1" class="show" name="divcontent">
 				<dl class="content">
@@ -237,7 +237,7 @@ h2 {
 				</dl>
 			</div>
 		</form>
-		<form name=tradequery action=alipay.trade.query.jsp method=post
+		<form name=tradequery action="/orders/query" method=post
 			  target="_blank">
 			<div id="body2" class="tab-content" name="divcontent">
 				<dl class="content">
