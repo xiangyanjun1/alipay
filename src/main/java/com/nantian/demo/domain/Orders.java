@@ -12,7 +12,7 @@ public class Orders {
 	 */
 	private String orderNum;
 	/**
-	 * 订单状态	10：待付款；20：已付款
+	 * 订单状态	10：待付款；20：已付款；30
 	 */
 	private String orderStatus;
 	/**

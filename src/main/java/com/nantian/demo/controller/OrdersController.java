@@ -3,8 +3,10 @@ package com.nantian.demo.controller;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
+import com.alipay.api.request.AlipayTradeFastpayRefundQueryRequest;
 import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.alipay.api.request.AlipayTradeQueryRequest;
+import com.alipay.api.request.AlipayTradeRefundRequest;
 import com.nantian.demo.domain.Orders;
 import com.nantian.demo.service.OrdersService;
 import com.nantian.demo.utils.AlipayConfig;
@@ -134,6 +136,48 @@ public class OrdersController {
 			"sign": "GFfHPAfskHE5yHv948K2C605E/W0ZYQUCECAVm+uCdosM+9zofNWRA9wqXEE6oKw6pQCXm20WHI2n6k1RYKCY9imqqAV9EcnP017oBcvU/BeDZ7Y7Vnql+/xcjrk+a0xS6LuUmMeheCpjpA8NTgj6iLZWRiy6PLu8mI/o3Eu33ca8C8t2HvXifbCTrHRmjReZ8LrlMfeQnna5FSdBrAFT35QzIfrHl02YIr0gnmpLWrf9l3jyKfmmpDHRX0gXEMQV+1zwnFWQPvD1kkeyDwE3Om+pfxg8i+MzJYeja4ri1RQUnlEcey+hKdsGCq1TPNMuR5oYlUWN8lWdZfOoG24Vw=="
 		}
 		*/
+		response.setContentType("text/html;charset=utf-8");
+		response.getWriter().print(result);
+		response.getWriter().flush();
+	}
+
+	@RequestMapping("/refund")
+	public void refund(String WIDTRout_trade_no,String WIDTRtrade_no,String WIDTRrefund_amount,String WIDTRrefund_reason,String WIDTRout_request_no,HttpServletResponse response) throws AlipayApiException, IOException {
+		//获得初始化的AlipayClient
+		AlipayClient alipayClient = new DefaultAlipayClient(AlipayConfig.gatewayUrl, AlipayConfig.app_id, AlipayConfig.merchant_private_key, "json", AlipayConfig.charset, AlipayConfig.alipay_public_key, AlipayConfig.sign_type);
+
+		//设置请求参数
+		AlipayTradeRefundRequest alipayRequest = new AlipayTradeRefundRequest();
+
+		alipayRequest.setBizContent("{\"out_trade_no\":\""+ WIDTRout_trade_no +"\","
+				+ "\"trade_no\":\""+ WIDTRtrade_no +"\","
+				+ "\"refund_amount\":\""+ WIDTRrefund_amount +"\","
+				+ "\"refund_reason\":\""+ WIDTRrefund_reason +"\","
+				+ "\"out_request_no\":\""+ WIDTRout_request_no +"\"}");
+
+		//请求
+		String result = alipayClient.execute(alipayRequest).getBody();
+
+		response.setContentType("text/html;charset=utf-8");
+		response.getWriter().print(result);
+		response.getWriter().flush();
+	}
+
+	@RequestMapping("/refundQuery")
+	public void refundQuery(String WIDRQout_trade_no,String WIDRQtrade_no,String WIDRQout_request_no,HttpServletResponse response) throws AlipayApiException, IOException {
+		//获得初始化的AlipayClient
+		AlipayClient alipayClient = new DefaultAlipayClient(AlipayConfig.gatewayUrl, AlipayConfig.app_id, AlipayConfig.merchant_private_key, "json", AlipayConfig.charset, AlipayConfig.alipay_public_key, AlipayConfig.sign_type);
+
+		//设置请求参数
+		AlipayTradeFastpayRefundQueryRequest alipayRequest = new AlipayTradeFastpayRefundQueryRequest();
+
+		alipayRequest.setBizContent("{\"out_trade_no\":\""+ WIDRQout_trade_no +"\","
+				+"\"trade_no\":\""+ WIDRQtrade_no +"\","
+				+"\"out_request_no\":\""+ WIDRQout_request_no +"\"}");
+
+		//请求
+		String result = alipayClient.execute(alipayRequest).getBody();
+
 		response.setContentType("text/html;charset=utf-8");
 		response.getWriter().print(result);
 		response.getWriter().flush();

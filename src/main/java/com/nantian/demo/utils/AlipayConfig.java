@@ -12,9 +12,9 @@ public class AlipayConfig {
 
 	public static String alipay_public_key = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAn5YADHUKvaF4hxrUI++00HFXmzucoFAE+sjlOVZt/FbP1ftC61fx7Yhfh0rYW671oL8cdMnH27JQgE89+elL60jLsNOtV1SVMWV2GX8Pz4/OAj0oXGtvmo7KG8xLT79aJgUWOOcP79uUory3hfPJL2cHKLO4HfjMF+Carj55EE0ac5fgxR+Fv5EeRdlJPT9EoFT+/RRHqjQYoconhvgyOGw3dDz4j9RnBw+zQ6DMns5JtzIogGfCNytHyyusFybWOMBOPfZMfNIjIdM372CqS1p3MyibsRoY0kF+WFDn4MIxGVnptnA5l7UDUQDgIzBa5VL+JRFmI8QjHIs6vgvI9wIDAQAB";
 
-	public static String notify_url = "http://n5kbaw.natappfree.cc/alipay/notifyUrl";
+	public static String notify_url = "http://27n6pe.natappfree.cc/alipay/notifyUrl";
 
-	public static String return_url = "http://n5kbaw.natappfree.cc/alipay/returnUrl";
+	public static String return_url = "http://27n6pe.natappfree.cc/alipay/returnUrl";
 
 	// 签名方式
 	public static String sign_type = "RSA2";

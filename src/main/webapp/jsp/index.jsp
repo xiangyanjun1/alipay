@@ -261,7 +261,7 @@ h2 {
 				</dl>
 			</div>
 		</form>
-		<form name=traderefund action=alipay.trade.refund.jsp method=post
+		<form name=traderefund action="/orders/refund" method=post
 			  target="_blank">
 			<div id="body3" class="tab-content" name="divcontent">
 				<dl class="content">
@@ -301,7 +301,7 @@ h2 {
 			</div>
 		</form>
 		<form name=traderefundquery
-			  action=alipay.trade.fastpay.refund.query.jsp method=post
+			  action="/orders/refundQuery" method=post
 			  target="_blank">
 			<div id="body4" class="tab-content" name="divcontent">
 				<dl class="content">

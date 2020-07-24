@@ -17,22 +17,14 @@ import java.util.Map;
 public class AlipayController {
 
 	@RequestMapping("/notifyUrl")
-	public String notifyUrl(HttpServletRequest request) {
-		Enumeration<String> parameterNames = request.getParameterNames();
-		while (parameterNames.hasMoreElements()){
-			System.out.println("notifyUrl");
-			String s = parameterNames.nextElement();
-			System.out.println(s);
-			System.out.println(request.getParameter(s));
+	public String notifyUrl(@RequestParam Map<String,String> params) {
+		for (Map.Entry<String, String> stringStringEntry : params.entrySet()) {
+			System.out.println(stringStringEntry.getKey() + ":" + stringStringEntry.getValue());
 		}
 		return "notify_url";
 	}
 	@RequestMapping("/returnUrl")
 	public void returnUrl(@RequestParam Map<String,String> params, HttpServletResponse response) throws AlipayApiException, IOException {
-		for (Map.Entry<String, String> stringStringEntry : params.entrySet()) {
-			System.out.println(stringStringEntry.getKey() + ":" + stringStringEntry.getValue());
-
-		}
 		boolean b = AlipaySignature.rsaCheckV2(params, AlipayConfig.alipay_public_key, AlipayConfig.charset, AlipayConfig.sign_type);
 		System.out.println(b);
 		String sWord = AlipaySignature.getSignCheckContentV1(params);
